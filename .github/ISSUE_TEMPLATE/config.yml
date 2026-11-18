@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 使用边界说明
+    url: https://github.com/zio-jun/campusrun-shield/blob/main/CONTRIBUTING.md
+    about: 提交前请阅读：仅授权评估、自建环境、不接收针对真实账号或未脱敏数据的材料

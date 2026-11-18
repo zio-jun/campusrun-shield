@@ -1,0 +1,27 @@
+name: 功能 / 检测规则建议
+description: 新增攻击方式、检测规则或文档改进
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: 归属
+      options:
+        - 攻击测试床（offense）
+        - 防护参考实现（defense）
+        - 文档（docs）
+        - 评估矩阵（evaluation）
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议内容
+      description: 要解决什么问题、方案要点、可验证的方法
+    validations:
+      required: true
+  - type: textarea
+    id: baseline
+    attributes:
+      label: 期望的可复现/可度量方式
+      description: 例如新增的 demo 数据、误报率评估方式

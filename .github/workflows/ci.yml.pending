@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  defense-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 语法检查
+        run: |
+          python -m py_compile offense/campusrun-attacker.py defense/validate_cli.py
+          python -m py_compile defense/server-side/trajectory_plausibility.py
+          python -m py_compile defense/server-side/run_evidence_validator.py
+
+      - name: 防护模块 demo
+        run: |
+          python defense/server-side/trajectory_plausibility.py --demo > /tmp/traj.json
+          python defense/server-side/run_evidence_validator.py --demo > /tmp/ev.json
+          echo "trajectory demo:"; tail -5 /tmp/traj.json
+          echo "evidence demo:"; tail -5 /tmp/ev.json
+
+      - name: 校验入口 smoke test
+        run: |
+          python defense/validate_cli.py demo
+          python offense/campusrun-attacker.py --help

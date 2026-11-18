@@ -1,0 +1,33 @@
+name: Bug 报告
+description: 报告运行问题、文档错误或检测规则误报
+labels: [bug]
+body:
+  - type: textarea
+    id: phenomenon
+    attributes:
+      label: 现象
+      description: 你做了什么、期望什么、实际发生了什么
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境
+      description: 平台（Windows/Linux）、Android 版本、设备 ABI、Python 版本、使用的命令
+      placeholder: |
+        OS: Windows 11
+        Python: 3.11
+        Device: arm64 Android 15
+        命令: python offense/campusrun-attacker.py info
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志 / 截图
+      description: 粘贴关键输出（脱敏后）
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: 边界确认
+      options:
+        - label: 我复现时使用的是自己控制的设备/虚拟环境
+          required: true

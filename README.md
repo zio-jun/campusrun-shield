@@ -1,6 +1,7 @@
 # CampusRun Shield · 校园跑安全盾
 
 ![License](https://img.shields.io/badge/license-MIT-blue)
+![CI](https://github.com/zio-jun/campusrun-shield/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Android%20%7C%20redroid-3DDC84?logo=android&logoColor=white)
 ![Status](https://img.shields.io/badge/status-v0.1.0--preview-orange)

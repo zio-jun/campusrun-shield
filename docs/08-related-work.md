@@ -1,0 +1,65 @@
+# 08 · 相关工作（Related Work）
+
+> 本文档把项目放在学术与工程文献的坐标系里：每条给出"与我们哪一部分相关"，便于评审核对，
+> 也便于后续贡献者判断是否需要新增/替换引用。引用均附可访问链接，未标注卷期的以官方页面为准。
+
+## 1. 位置欺骗与 GNSS 攻击
+
+| 文献 | 与本项目的关系 |
+|---|---|
+| Tippenhauer et al., *On the Requirements for Successful GPS Spoofing Attacks*, ACM CCS 2011 | 经典 GPS 欺骗可行性分析：说明"位置来源不可信"是系统性问题，对应本项目方式一/二的威胁前提 |
+| *A Contemporary Survey on GNSS Spoofing Attacks and Effective Countermeasures*（[Zenodo](https://zenodo.org/records/20632922)） | 综述类：GNSS 欺骗检测手段全景（信号层 / 融合层 / 应用层），对应本项目"服务端交叉校验"的定位 |
+
+## 2. 轨迹伪造检测与异常检测
+
+| 文献 | 与本项目的关系 |
+|---|---|
+| *A Comprehensive Study of Trajectory Forgery and Detection in Location-Based Services*（[IEEE](https://ieeexplore.ieee.org/document/10119175)） | 直接对标：轨迹伪造的生成方式与检测思路，是本项目 `trajectory_plausibility.py`（物理约束 + 地图匹配 + 重放检测）的方法论来源之一 |
+| *An Experimental Study of Existing Tools for Outlier Detection and Cleaning in Trajectories*（[arXiv](https://arxiv.org/abs/2511.20139)） | 轨迹离群点清洗的工程评估：对应本项目"超速尖峰剔除 + 分段有效里程"的实现取舍 |
+
+## 3. 传感器可信与设备指纹
+
+| 文献 | 与本项目的关系 |
+|---|---|
+| Zhang et al., *SensorID: Sensor Calibration Fingerprinting for Smartphones*, IEEE S&P 2019（[IEEE](https://ieeexplore.ieee.org/abstract/document/8835276)） | 传感器校准指纹：说明传感器数据具有可辨识性，为"传感器×GPS 交叉校验"和"设备一致性"提供理论支撑 |
+| 本项目实测（case study） | 目标 App 的步频异常判定（`dlg_step_rate_invalid` 复用自行车提示）是"传感器×速度"交叉的工业实践样本 |
+
+## 4. 移动端完整性、反注入与认证
+
+| 文献 / 标准 | 与本项目的关系 |
+|---|---|
+| *CLOADER: Evading Security Mobile Defenses via Runtime Obfuscation and Adaptive Hooking Tactics*（[arXiv](https://arxiv.org/abs/2609.23396)） | 运行时混淆与自适应 Hook 规避：对应本项目方式一（Frida 注入）与方式三（容器内 hook）的对抗面，以及防护端"注入特征检测"的必要性 |
+| [OWASP MASVS](https://github.com/OWASP/owasp-masvs)（移动应用安全验证标准） | 客户端加固的工程基线：对应第 0 层（反调试/反注入/完整性）与第 1 层（关键逻辑 native 化）的设计依据 |
+| [Android Play Integrity API](https://developer.android.com/google/play/integrity) | 设备与应用的完整性证明：对应"设备认证作为信号而非唯一判据"的设计取向 |
+| [Android Location 开发文档](https://developer.android.com/training/location) | mock location 机制与限制：说明为何系统级 mock 对融合定位 SDK 无效，需要在 SDK 层验证 |
+
+## 5. 校园跑制度与体育政策（中文）
+
+| 文献 / 政策 | 与本项目的关系 |
+|---|---|
+| 《校园跑APP促进大学生健康的价值、挑战与实践路径研究》，体育世界（[PDF](https://www.sxsportsworld.com/rc-pub/front/front-article/download/117538837/lowqualitypdf/校园跑APP促进大学生健康的价值、挑战与实践路径研究.pdf)） | 制度侧研究：说明校园跑的价值与执行挑战，支撑本项目"记录更自由、审核更自动"的价值主张 |
+| 《特色校园跑对学生身体素质的影响研究》，体育世界（[PDF](https://www.sxsportsworld.com/rc-pub/front/front-article/download/97770305/lowqualitypdf/特色校园跑对学生身体素质的影响研究.pdf)） | 效果侧研究：为"校园跑与体质提升的关系"提供经验证据 |
+| 教育部《高等学校体育工作基本标准》（教体艺〔2014〕5 号） | 政策依据：校园跑类要求的制度来源，解释为何成绩与学分绑定、作弊动机强 |
+
+## 6. 本项目与文献的关系图
+
+```
+        位置欺骗（CCS 2011 / GNSS 综述）
+                    │
+                    ▼
+   方式一 注入重打包 ──┐        ┌── 完整性自校验 / 反注入（MASVS, CLOADER）
+   方式二 虚拟机      ──┼──► 攻击 ──► 防护 ◄── 传感器指纹（SensorID）
+   方式三 容器        ──┘        └── 轨迹伪造检测（IEEE 轨迹伪造研究）
+                    │
+                    ▼
+        服务端裁决（GNSS 综述 + 轨迹检测 + 传感器交叉）
+                    │
+                    ▼
+        制度层（校园跑中文研究 + 体育工作基本标准）
+```
+
+## 7. 引用维护约定
+
+- 新增引用必须是**可访问、可核对**的来源（DOI / 官方页面 / 预印本）
+- 不引用无法核实的"内部资料"充当学术支撑
+- 与本项目结论冲突的文献同样收录，并在 `docs/05-evaluation.md` 中说明差异

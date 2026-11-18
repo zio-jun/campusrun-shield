@@ -134,6 +134,8 @@ campusrun-shield/
 | [05 对抗评估](docs/05-evaluation.md) | 攻击向量 × 防护有效性矩阵 |
 | [06 路线图](docs/06-roadmap.md) | 里程碑与参赛申报 |
 | [07 开源结构](docs/07-repo-structure.md) | 两件交付物的组织方式 |
+| [08 相关工作](docs/08-related-work.md) | 定位欺骗 / 轨迹检测 / 传感器指纹 / 反注入 / 校园跑制度文献 |
+| [09 技术报告](docs/09-technical-report.md) | 论文式：问题—方法—结果—局限 |
 
 ## 使用边界
 

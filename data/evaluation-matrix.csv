@@ -1,0 +1,10 @@
+attack_vector,mock_detection,integrity_check,injection_detection,emulator_fingerprint,server_trajectory_physics,server_sensor_cross_check,environment_consistency,evidence_chain_face,note
+A1_定位SDK替换,no,partial,partial,na,yes,yes（步频真实）,yes,yes,壳完整性可先拦截
+A2_轨迹速度异常,na,na,na,na,yes,yes,na,na,超速点占比>20%升级reject
+A3_低频伪造采样,na,na,na,na,partial,yes,na,na,采样间隔异常可标记
+B1_模拟器+frida,no,partial,partial,yes,partial,partial,yes,yes,
+B2_传感器伪造,na,na,partial,yes,yes,partial,na,na,需时序自洽对抗
+B3_虚拟摄像头,na,na,na,yes,na,na,na,partial,活体是硬边界
+B4_快照回滚刷成绩,na,na,na,partial,yes,na,yes,na,重复轨迹/时间异常
+C1_容器内运行+SDK_Hook,no,no（不触发dex校验）,partial,no（目标未检测容器）,yes,yes,yes,yes,当前最薄弱环节
+C2_容器内传感器伪造,na,na,partial,no,yes,partial,na,na,

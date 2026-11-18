@@ -19,10 +19,16 @@
 - **防护端（研究）**：以华中大体育为真实案例，给出客户端 + 服务端分层防护蓝图与可运行参考实现
 - **评估端**：攻击向量 × 检测手段的对抗矩阵，用实测数据说明"哪一层守得住、哪一层只是心理安慰"
 
-## 两种攻击方式（本项目核心创新点）
+## 两件交付物
+
+| 交付物 | 形态 | 位置 |
+|---|---|---|
+| **攻击测试床（软件）** | 可执行：`campusrun-attacker.py` CLI + Frida 脚本 + 环境编排 | `offense/` |
+| **防护参考实现（库）** | 供集成验证：服务端校验器 + 客户端检测模块 + 校验入口（不是独立 App） | `defense/` |
+
+## 三种攻击方式（本项目核心创新点）
 
 ### 方式一：本机虚拟环境改造（无 root）
-
 在不改系统、不 root 的真机上，用 Frida Gadget 注入重打包 APK，在**应用进程内构建一个虚拟定位层**：
 Hook 高德定位 SDK 的 `AMapLocationListener` 回调，用轨迹播放器替换经纬度/速度/精度/时间戳/定位类型，
 使 App 感知到的"世界"与真实世界解耦。系统级 mock location 对高德融合定位无效，必须在 SDK 层做。
@@ -30,19 +36,28 @@ Hook 高德定位 SDK 的 `AMapLocationListener` 回调，用轨迹播放器替�
 → 见 [`docs/02-offense-method-a.md`](docs/02-offense-method-a.md)、[`offense/ondevice/`](offense/ondevice/)
 
 ### 方式二：虚拟机 + 本地虚拟环境
-
 用完整虚拟 Android（redroid 容器安卓 / Windows 模拟器 / Android-x86）承载 App，在**虚拟机内部**叠加
-root + frida-server + LSPosed + 模拟定位 + 传感器伪造 + 虚拟摄像头，形成比方式一更深的环境虚拟化：
-
-| 能力 | 方式一（本机注入） | 方式二（虚拟机） |
-|---|---|---|
-| 定位伪造 | ✅ SDK 层 Hook | ✅ 多层（系统/框架/SDK） |
-| 步频/加速度伪造 | ❌（传感器仍真实） | ✅ SensorManager 注入 |
-| 人脸核验绕过 | ❌（仍需真人） | ⚠️ 虚拟摄像头/活体难度高 |
-| 被检测风险 | 中（壳完整性校验、frida 特征） | 高（模拟器指纹、ATD 环境检测） |
-| 部署成本 | 低（一台真机 + adb） | 中（虚拟化环境 + 配置） |
+root + frida-server + LSPosed + 模拟定位 + 传感器伪造 + 虚拟摄像头，形成比方式一更深的环境虚拟化。
 
 → 见 [`docs/03-offense-method-b.md`](docs/03-offense-method-b.md)、[`offense/vm/`](offense/vm/)
+
+### 方式三：应用级虚拟环境（双开 / VMOS / VirtualApp 容器）
+把目标 APK 塞进容器 App（双开助手、VMOS/VPhone、VirtualApp 派生）运行，在容器内完成 hook 与定位伪造。
+**不需要重打包 → 不触发壳的 dex 完整性校验**；这条路径能成立，根因是目标应用
+**只做了安装包静态完整性校验，却没有做运行环境真实性校验**（未检测容器特征/多开）。
+
+→ 见 [`docs/03b-offense-method-c.md`](docs/03b-offense-method-c.md)、[`offense/container/`](offense/container/)
+
+| 能力 | 方式一（本机注入） | 方式二（虚拟机） | 方式三（容器） |
+|---|---|---|---|
+| 定位伪造 | ✅ SDK 层 Hook | ✅ 多层（系统/框架/SDK） | ✅ 容器系统层 + SDK Hook |
+| 步频/加速度伪造 | ❌（传感器仍真实） | ✅ SensorManager 注入 | ⚠️ 视容器能力 |
+| 人脸核验绕过 | ❌（仍需真人） | ⚠️ 虚拟摄像头/活体难度高 | ⚠️ 依赖容器摄像头注入 |
+| 需要重打包 | ✅（触发 dex 校验） | ❌ | ❌ |
+| 需要 root | ❌ | ✅ | ⚠️ 视容器 |
+| 被检测风险 | 中（壳完整性、frida 特征） | 高（模拟器指纹） | 高（容器/多开特征——但目标当前未检测） |
+| 部署成本 | 低（真机 + adb） | 中（虚拟化环境） | 低（装个容器 App） |
+
 
 ## 防护蓝图（研究产出）
 
@@ -71,11 +86,14 @@ root + frida-server + LSPosed + 模拟定位 + 传感器伪造 + 虚拟摄像头
 
 ```
 campusrun-shield/
-├── docs/                    # 威胁模型 / 两种攻击方式 / 防护蓝图 / 评估矩阵 / 路线图
+├── docs/                    # 威胁模型 / 三种攻击方式 / 防护蓝图 / 评估矩阵 / 路线图
 ├── offense/                 # 攻击端软件
+│   ├── campusrun-attacker.py#   CLI：info / route / push / attach / repack
 │   ├── ondevice/            #   方式一：Gadget 注入 + 定位虚拟层（hook.js / 路线生成 / 配置）
-│   └── vm/                  #   方式二：redroid / 模拟器 + frida-server + 传感器伪造
-├── defense/                 # 防护参考实现
+│   ├── vm/                  #   方式二：redroid / 模拟器 + frida-server + 传感器伪造
+│   └── container/           #   方式三：双开 / VMOS / VirtualApp 容器内运行
+├── defense/                 # 防护参考实现（库，不是独立 App）
+│   ├── validate_cli.py      #   统一校验入口：demo / trajectory / evidence / all
 │   ├── server-side/         #   轨迹合理性、成绩证据校验（Python）
 │   └── client-side/         #   反 mock / 反模拟器 / 完整性自校验（Kotlin + C++）
 ├── evaluation/              # 对抗评估矩阵与指标
@@ -85,13 +103,16 @@ campusrun-shield/
 ## 快速开始
 
 ```bash
-# 方式一：生成一条跑道轨迹
-python offense/ondevice/gen_route.py --shape stadium --center 30.5129,114.4096 \
-    --track-length 100 --radius 18 --speed 2.5 -o campusrun_route.json
+# 攻击端：生成轨迹 → 推送脚本与轨迹 → 附加目标进程（frida-server 环境）
+python offense/campusrun-attacker.py route --shape stadium --center 30.5142,114.4049 \
+    --track-length 100 --radius 18 -o campusrun_route.json
+python offense/campusrun-attacker.py push --route campusrun_route.json --debug
+python offense/campusrun-attacker.py attach
 
-# 防护端：跑内置合成数据的评估 demo
-python defense/server-side/trajectory_plausibility.py --demo
-python defense/server-side/run_evidence_validator.py --demo
+# 防护端：统一校验入口（demo / 轨迹 / 证据）
+python defense/validate_cli.py demo
+python defense/validate_cli.py trajectory campusrun_route.json
+python defense/validate_cli.py evidence evidence.json
 
 # 方式二：起一套容器安卓（详见 offense/vm/README.md）
 docker compose -f offense/vm/docker-compose.yml up -d

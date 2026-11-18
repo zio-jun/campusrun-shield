@@ -1,0 +1,12 @@
+﻿# 构建产物
+build/
+*.apk
+*.apk.zip
+# Python
+__pycache__/
+*.pyc
+.venv/
+# 系统
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,85 @@
+# campusrun-shield · offense/vm —— redroid 容器编排（WSL2 路线）
+#
+# 用途：仅用于授权安全评估与自建隔离实验环境（攻击方式 B 测试床）。
+# 请勿用于任何生产环境、他人设备或真实校园运动数据。
+#
+# 前置条件（WSL2）：
+#   - 开启嵌套虚拟化：wsl --set-default-version 2 后确认 /dev/kvm 存在
+#   - Linux 内核支持 binder/ashmem（Ubuntu 22.04+ 默认具备；老发行版需编译内核模块）
+#   - 安装 docker engine（非 Docker Desktop 也可）
+#
+# 快速启动：
+#   docker compose up -d
+#   adb connect 127.0.0.1:5555
+#   adb devices                      # 应看到 127.0.0.1:5555 device
+#   scrcpy -s 127.0.0.1:5555         # 可选投屏
+#
+# 镜像选择说明（IMAGE_TAG 支持）：
+#   - x86_64 宿主：默认镜像即可（示例 tag 见下，按需换版本）
+#   - arm64 宿主（如 Apple Silicon 上的 WSL/ARM Linux）：请使用
+#     redroid/redroid:11.0.0-latest 的 arm64 变体，或将 platform 改为 linux/arm64
+#   - 版本对照（示例，以官方发布为准）：
+#       11.0.0-latest          Android 11
+#       12.0.0-latest          Android 12
+#       13.0.0-latest          Android 13
+#       14.0.0-latest          Android 14
+#   - 目标 app（net.crigh.hzkjsport, armeabi-v7a）建议 Android 11 镜像：
+#     自带 arm 指令转译；Android 9 镜像（9.0.0-latest）兼容性最好但无转译增强。
+
+services:
+  redroid:
+    image: ${IMAGE_REPO:-redroid/redroid}:${IMAGE_TAG:-11.0.0-latest}
+    platform: ${PLATFORM:-linux/amd64}   # arm64 宿主改为 linux/arm64
+    container_name: campusrun-redroid
+    privileged: true                     # 需要内核模块与 HAL 访问
+    ports:
+      - "${ADB_PORT:-5555}:5555"         # adb connect 127.0.0.1:5555
+    command:
+      # Android 启动参数
+      - androidboot.redroid_width=${WIDTH:-1080}
+      - androidboot.redroid_height=${HEIGHT:-1920}
+      - androidboot.redroid_dpi=${DPI:-440}
+      - androidboot.redroid_gpu_mode=${GPU_MODE:-auto}   # host|guest|auto
+      # 屏幕方向：0 竖屏，1 横屏
+      - androidboot.redroid_density=${DENSITY:-440}
+      # 数据持久化目录（见 volumes）
+      - androidboot.redroid_fps=${FPS:-60}
+      # 开启 Google Play 相关组件（目标 app 无 GMS 依赖，可不开）
+      # - androidboot.redroid_google_play=1
+    volumes:
+      # sdcard：宿主目录映射为容器内 /sdcard（方便拷 APK/脚本）
+      - ${DATA_DIR:-./data}:/data
+      # 可选：共享宿主文件进 sdcard
+      # - ${SDCARD_DIR:-./sdcard}:/sdcard
+    restart: unless-stopped
+    environment:
+      - TZ=${TZ:-Asia/Shanghai}
+    # 可选：多实例并发（不同端口/不同数据目录）：
+    # docker compose -p vm2 up -d --scale redroid=2 不适用于端口映射，
+    # 多开请复制本服务块并修改 ADB_PORT 与 DATA_DIR。
+
+  # 可选：scrcpy web 版（浏览器投屏，免装本地 scrcpy）
+  scrcpy-web:
+    image: ${SCRCPY_IMAGE:-scrcpy/scrcpy-web:latest}
+    container_name: campusrun-scrcpy-web
+    depends_on: [redroid]
+    ports:
+      - "${SCRCPY_WEB_PORT:-8000}:8000"
+    environment:
+      - ADB_SERVER_SOCKET=tcp:redroid:5555
+    profiles: ["web"]                    # docker compose --profile web up -d
+
+# 常用运维：
+#   查看实例：adb devices
+#   重启实例：docker compose restart redroid
+#   进容器：  docker exec -it campusrun-redroid sh
+#   日志：    docker compose logs -f redroid
+#   多开示例（第二实例，端口 5556）：
+#     ADB_PORT=5556 DATA_DIR=./data2 IMAGE_TAG=9.0.0-latest \
+#       docker compose -p campusrun2 up -d
+#
+# 已知限制（与传感器/GPS 伪造相关，详见 sensor-spoof.md）：
+#   - redroid 默认无 GPS/传感器 HAL 数据源；模拟定位与加速度需
+#     容器内注入（frida Hook 或自写 HAL），或改用路线 A 模拟器。
+#   - GPU 直通失败时 gpu_mode=guest 用 SwiftShader 软渲染，
+#     渲染器指纹与真机不同，注意环境指纹收缩（README §1.2）。

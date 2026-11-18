@@ -1,0 +1,7 @@
+{
+  "interaction": {
+    "type": "script",
+    "path": "/data/local/tmp/campusrun_hook.js",
+    "on_change": "reload"
+  }
+}

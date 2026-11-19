@@ -782,3 +782,18 @@ NETDUMP: RESP seq=1 code=200 ok=1 msg=OK
 | 8 计步伪造 | 多传感器交叉 + 服务端步频-配速一致性 |
 | 9 网络观察/篡改 | TLS 证书固定 + 请求签名含 attestation 结果 |
 | 10 dex 偷存 | 壳 VMP 强化 + 敏感逻辑服务端化 |
+
+---
+
+## 10. 双 ABI 适配（32位 / 64位校园跑 App 通用）
+
+不同学校的校园跑 App 原生库 ABI 不同（如华中大体育为 armeabi-v7a 单 ABI，某些新 App 为 arm64-v8a）。攻击管线按 ABI 二选一，**其余步骤完全一致，hook.js 同一份共用**：
+
+| ABI | gadget | 注入位置 | 说明 |
+|---|---|---|---|
+| 32 位 (armeabi-v7a) | frida-gadget-16.7.19-android-arm.so | lib/armeabi-v7a/libcampusrun.so | 华中大体育实测路径 |
+| 64 位 (arm64-v8a) | frida-gadget-16.7.19-android-arm64.so | lib/arm64-v8a/libcampusrun.so | 同一脚本，Java 桥两者都可用 |
+
+- 识别：解包后看 lib/ 下存在哪个 ABI 目录；两者都有时按设备实际运行 ABI 选（优先 64）。
+- 16.7.x 的 arm64 gadget 带完整 Java 桥（17.x 的 32 位才缺桥），两 ABI 均可用直呼 Java.use 风格脚本。
+- 自动化：C:\校园跑\tools\inject_gadget.py（detect_abi → 放 gadget → 写 config → 复制 hook.js → 提示签名装机）。

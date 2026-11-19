@@ -1,0 +1,14 @@
+Map data © OpenStreetMap contributors
+Open Database License (ODbL) 1.0
+https://www.openstreetmap.org/copyright
+https://opendatacommons.org/licenses/odbl/1-0/
+
+campus-map.json is a compact, region-limited adaptation of OpenStreetMap
+data, including the shapes, label locations and footpath network used by the
+app. The asset is redistributed under ODbL 1.0.
+
+Original extract retrieved 2026-11-17:
+https://api.openstreetmap.org/api/0.6/map?bbox=114.389,30.501,114.447,30.537
+
+The Python script tools/prepare_map.py in the source project converts an
+OpenStreetMap API 0.6 XML extract of this area to the asset format.

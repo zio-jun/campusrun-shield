@@ -72,6 +72,37 @@
 | **攻击测试床（软件）** | 可执行 CLI + Frida 脚本 + 环境编排 | `offense/` |
 | **防护参考实现（库）** | 服务端校验器 + 客户端检测模块 + 校验入口（不是独立 App） | `defense/` |
 
+## 评估工具 · sentinel（本项目内置 CLI）
+
+一条命令完成「APK 加固识别 → 轨迹可信度分析 → 成绩证据校验 → 评估报告」，
+纯 Python 标准库实现（3.9+，零第三方依赖）：
+
+```bash
+# 生成样例并跑通全流程（无需任何参数）
+python -m sentinel demo
+
+# 评估 APK 加固/壳与可疑资产
+python -m sentinel apk app.apk -o apk-report.md
+
+# 轨迹可信度分析（CSV: t,lat,lng）
+python -m sentinel trace trace.csv -o trace-report.md
+
+# 成绩证据校验（服务端重算视角）
+python -m sentinel evidence evidence.json -o evidence-report.md
+
+# 合并总报告
+python -m sentinel bundle --apk app.apk --trace trace.csv --evidence evidence.json -o report.md
+```
+
+| 模块 | 职责 | 关键指标 |
+|---|---|---|
+| `sentinel/apk_guard.py` | APK 加固/壳识别 | 厂商特征库（顶象/360/梆梆/乐固/爱加密/百度/阿里/易盾）、可疑资产 |
+| `sentinel/mock_trace.py` | 轨迹可信度 | 速度 CV/熵/钳制比、折角比、等间隔比、加速度突变 |
+| `sentinel/evidence.py` | 成绩证据校验 | 里程重算偏差、用时一致性、平均/瞬时速度上限 |
+| `sentinel/report.py` | Markdown 报告 | 三类报告 + 合并报告 |
+
+测试：`python -m unittest discover -s tests -v`（10 个用例，CI 自动执行）。
+
 ## 快速开始
 
 ```bash

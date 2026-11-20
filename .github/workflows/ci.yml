@@ -31,3 +31,9 @@ jobs:
         run: |
           python defense/validate_cli.py demo
           python offense/campusrun-attacker.py --help
+
+      - name: sentinel 单元测试
+        run: python -m unittest discover -s tests -v
+
+      - name: sentinel demo smoke
+        run: python -m sentinel demo

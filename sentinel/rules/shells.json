@@ -1,0 +1,42 @@
+{
+  "dongxiang": {
+    "name": "顶象 DxShield",
+    "markers": ["com.security.shell", "com.security.inner", "libapk0000.so", "libstub000.so"],
+    "weight": 4
+  },
+  "360": {
+    "name": "360 加固",
+    "markers": ["libjiagu.so", "libjiagu_art.so", "libDexHelper.so", "com.qihoo.util"],
+    "weight": 4
+  },
+  "bangbang": {
+    "name": "梆梆加固",
+    "markers": ["libsecexe.so", "libsecmain.so", "com.secneo.apkwrapper"],
+    "weight": 4
+  },
+  "tencent": {
+    "name": "腾讯乐固",
+    "markers": ["libshella", "libshellx", "com.tencent.StubShell"],
+    "weight": 4
+  },
+  "ijiami": {
+    "name": "爱加密",
+    "markers": ["libexec.so", "libexecmain.so", "com.shell.SuperApplication"],
+    "weight": 4
+  },
+  "baidu": {
+    "name": "百度加固",
+    "markers": ["libbaiduprotect.so"],
+    "weight": 4
+  },
+  "ali": {
+    "name": "阿里聚安全",
+    "markers": ["libmobisec.so", "com.ali.mobisecenhance"],
+    "weight": 4
+  },
+  "netease": {
+    "name": "网易易盾",
+    "markers": ["libnesec.so"],
+    "weight": 4
+  }
+}

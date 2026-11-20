@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.3.0 — 2026-11-20
+
+### 评估工具合入
+
+- 新增 `sentinel/` CLI 工具包：`apk`（加固识别）、`trace`（轨迹可信度）、
+  `evidence`（成绩证据校验）、`bundle`（合并报告）、`demo`（样例全流程）
+- 新增 `tests/` 单元测试（10 用例，unittest，零依赖）
+- CI 增加 sentinel 测试与 demo smoke 步骤
+- README 增加「评估工具 · sentinel」章节
+
 ## v0.2.1 — 2026-11-20
 
 ### 安全通告

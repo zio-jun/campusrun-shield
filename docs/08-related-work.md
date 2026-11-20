@@ -85,3 +85,18 @@
 
 ### 本文档的定位
 上述文献共同印证本项目的三条技术路线（注入改写/虚拟环境/容器）与防护分层（客户端检测+服务端交叉校验）的合理性；本项目以真实商业壳（顶象 DxShield v5.5.11r/v5.5.72r）与真实校园跑应用为对象，补充了工程级实测数据。
+
+---
+
+## 补充2：GitHub 开源工具链参考（2026-11-20 增补）
+
+| 项目 | 用途 | 与本项目关系 |
+|---|---|---|
+| [undetected-frida / strongR-frida-android](https://github.com/Furtif/undetected-frida) | Frida 反检测补丁（gadget/server 特征抹除, Magisk/KSU 模块） | 本项目注入载体的免杀升级路线（对抗壳的 libantitrace） |
+| [FridaBypassKit](https://github.com/okankurtuluss/FridaBypassKit) | Root/SSL Pinning/模拟器/调试检测通用绕过 | 环境检测绕过的脚本模式参考 |
+| [JJKLab/android-mockloc](https://github.com/JJKLab/android-mockloc) | 系统级 mock 位置提供者 | 虚拟环境前端的参考实现 |
+| [AuroraNest/Modify_Positioning](https://github.com/AuroraNest/Modify_Positioning) | 安卓/iOS 定位修改 | mock 服务实现参考 |
+| [Sriharan-S/elsewhere](https://github.com/Sriharan-S/elsewhere) | Flutter GPS mock（地图选点全局生效） | 与"校园路线"画圈/手绘交互对照 |
+| [ceigt/GeoLocation](https://github.com/ceigt/GeoLocation) | LSPosed 定位模块（LocusMimic 后继） | 有 root 环境下的标准工具路线 |
+
+**工程映射**：本项目的"校园路线"= mockloc/elsewhere 的路线 + 无 root 注入；"改造版"= FridaBypassKit/undetected-frida 的注入+反检测结合体。上述项目为免 root 路线的可替代/可组合组件提供了公开实现依据。

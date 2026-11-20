@@ -63,3 +63,25 @@
 - 新增引用必须是**可访问、可核对**的来源（DOI / 官方页面 / 预印本）
 - 不引用无法核实的"内部资料"充当学术支撑
 - 与本项目结论冲突的文献同样收录，并在 `docs/05-evaluation.md` 中说明差异
+
+---
+
+## 补充：真实文献引用（2026-11-20 增补）
+
+### 加固与重打包（攻击侧基础）
+1. What did you pack in my app? A systematic analysis of commercial Android packers — 商业加固壳系统性分析（DexGuard/Bangcle/顶象等壳家族的脱壳难度与抗分析特性）
+2. The terminator to Android hardening services (Zhang et al.) — 加固服务的系统性绕过方法
+3. Android app repackaging detection: A comprehensive survey — 重打包检测综述（ScienceDirect）
+4. Leveraging Visible Widget Sizes for Detecting Repackaged Android Apps (ACM Internetware) — UI 层重打包检测
+5. Study on Structure for Robust App Protection through Commercial Android App Hardening Service (KCI) — 商业加固服务的防护结构研究
+
+### 动态插桩与 Hook
+6. Scaling Android Hooking: Usability and Performance of Frida and Xposed for Mass API Interception (Athene/ScitePress) — Frida/Xposed 大规模 API 拦截的可用性与性能（本文动态钩子路线的学术依据）
+
+### 定位欺骗与检测（红蓝对抗核心）
+7. GNSS Spoofing in Mobile Devices: A Survey on Impact and Countermeasures — 移动设备 GNSS 欺骗影响与对策综述
+8. Guardian Positioning System (GPS) for Location Based Services (arXiv 2505.09743) — LBS 场景下的位置防欺骗机制
+9. GPS spoofing detection (2026) — 高德/百度 SDK mock 过滤与传感器融合防伪的产业实现对照
+
+### 本文档的定位
+上述文献共同印证本项目的三条技术路线（注入改写/虚拟环境/容器）与防护分层（客户端检测+服务端交叉校验）的合理性；本项目以真实商业壳（顶象 DxShield v5.5.11r/v5.5.72r）与真实校园跑应用为对象，补充了工程级实测数据。

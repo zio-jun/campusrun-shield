@@ -24,6 +24,7 @@
 - [为什么做这个项目](#为什么做这个项目)
 - [三种攻击方式](#三种攻击方式)
 - [防护蓝图](#防护蓝图)
+- [评估工具 · sentinel](#评估工具--sentinel本项目内置-cli)
 - [两件交付物](#两件交付物)
 - [快速开始](#快速开始)
 - [评估结论](#评估结论)
@@ -146,6 +147,16 @@ campusrun-shield/
 │   ├── validate_cli.py       #   统一校验入口：demo / trajectory / evidence
 │   ├── server-side/          #   轨迹合理性、成绩证据校验
 │   └── client-side/          #   反 mock / 反模拟器 / 完整性自校验 / native 指标签名
+├── sentinel/                 # 评估工具 CLI（apk / trace / evidence / bundle / demo）
+│   ├── apk_guard.py          #   APK 加固/壳识别
+│   ├── mock_trace.py         #   轨迹可信度分析
+│   ├── evidence.py           #   成绩证据校验
+│   ├── report.py             #   Markdown 报告
+│   ├── cli.py                #   命令行入口
+│   └── rules/shells.json     #   加固厂商特征库
+├── tests/                    # sentinel 单元测试（10 用例，unittest）
+├── examples/                 # 样例数据与示例报告
+├── pyproject.toml            # pip 安装配置（sentinel 命令）
 ├── submission/               # 参赛佐证材料（docx 生成脚本）
 ├── .github/                  # CI、Issue/PR 模板
 ├── CHANGELOG.md

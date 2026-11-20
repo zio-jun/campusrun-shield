@@ -29,6 +29,7 @@
 | [13 定位伪造对抗](13-location-anti-spoof.md) | mock provider 至坐标转换的逐环防御 |
 | [14 服务端判定算法](14-server-side-validation.md) | 证据校验、距离重算、形态学、配速模型、图谱风控 |
 | [15 纵深防御与验收](15-defense-in-depth.md) | 成本模型、验收清单、运营手册、合规声明 |
+| [16 sentinel 工具手册](16-sentinel-cli.md) | CLI 子命令、输入格式、判定逻辑、样例报告 |
 
 ## 规划与结构
 

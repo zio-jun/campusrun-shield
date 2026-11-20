@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.3.1 — 2026-11-20
+
+### 工程化完善
+
+- 新增 `pyproject.toml`：`pip install -e .` 后可直接使用 `sentinel` 命令
+- 新增 `examples/`：真人/回放轨迹、证据包、带加固特征的 APK 样本与四份示例报告
+- 新增 [docs/16-sentinel-cli.md](docs/16-sentinel-cli.md)：工具使用手册
+- README 目录结构同步 sentinel / tests / examples
+- docs 索引补充第 16 篇
+
 ## v0.3.0 — 2026-11-20
 
 ### 评估工具合入

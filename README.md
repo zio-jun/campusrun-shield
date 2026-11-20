@@ -136,6 +136,12 @@ campusrun-shield/
 | [07 开源结构](docs/07-repo-structure.md) | 两件交付物的组织方式 |
 | [08 相关工作](docs/08-related-work.md) | 定位欺骗 / 轨迹检测 / 传感器指纹 / 反注入 / 校园跑制度文献 |
 | [09 技术报告](docs/09-technical-report.md) | 论文式：问题—方法—结果—局限 |
+| ⭐ [10 攻防全景矩阵](docs/10-defense-matrix.md) | **总索引**：8 层 50 种攻击模式 × 检测信号 × 客户端/服务端防御 × 绕过后下一步 × 残留风险 |
+| [11 壳与注入对抗实录](docs/11-shell-and-injection.md) | 62 个改造版本实测：签名校验、资产完整性、落盘防删、守卫自刀、注入面攻防 |
+| [12 Frida/Hook 检测](docs/12-anti-frida-anti-hook.md) | 模块/字符串/入口字节/ArtMethod/JNI 表/行为侧六类检测与反绕过 |
+| [13 定位伪造对抗](docs/13-location-anti-spoof.md) | mock provider → getter 覆写 → 坐标转换劫持全链路的逐环防御 |
+| [14 服务端判定算法](docs/14-server-side-validation.md) | 证据强制提交、距离重算、轨迹形态学、配速模型、图谱风控 |
+| [15 纵深防御与验收](docs/15-defense-in-depth.md) | 成本模型、客户端/服务端验收清单、运营手册、合规声明 |
 
 ## 使用边界
 

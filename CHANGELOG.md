@@ -2,6 +2,19 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.2.0 — 2026-11-20
+
+### 文档
+
+- 新增 ⭐ [docs/10-defense-matrix.md](docs/10-defense-matrix.md)：攻防全景矩阵——8 层 50 种攻击模式 × 检测信号 × 客户端/服务端防御 × 绕过后下一步 × 残留风险
+- 新增 [docs/11-shell-and-injection.md](docs/11-shell-and-injection.md)：壳与注入对抗实录（62 个改造版本实测沉淀）
+- 新增 [docs/12-anti-frida-anti-hook.md](docs/12-anti-frida-anti-hook.md)：Frida/Hook 六类检测技术与反绕过
+- 新增 [docs/13-location-anti-spoof.md](docs/13-location-anti-spoof.md)：定位伪造对抗全链路
+- 新增 [docs/14-server-side-validation.md](docs/14-server-side-validation.md)：服务端判定算法（证据校验/形态学/配速模型/图谱风控）
+- 新增 [docs/15-defense-in-depth.md](docs/15-defense-in-depth.md)：纵深防御成本模型、验收清单与运营手册
+- 新增 [docs/README.md](docs/README.md)：文档导航索引
+- 更新 README 文档索引，标注矩阵为总索引入口
+
 ## v0.1.0 — 2026-11-18
 
 首个公开版本。

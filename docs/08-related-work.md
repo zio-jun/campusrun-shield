@@ -100,3 +100,27 @@
 | [ceigt/GeoLocation](https://github.com/ceigt/GeoLocation) | LSPosed 定位模块（LocusMimic 后继） | 有 root 环境下的标准工具路线 |
 
 **工程映射**：本项目的"校园路线"= mockloc/elsewhere 的路线 + 无 root 注入；"改造版"= FridaBypassKit/undetected-frida 的注入+反检测结合体。上述项目为免 root 路线的可替代/可组合组件提供了公开实现依据。
+
+---
+
+## 补充3：校园跑专项文献与开源（第一遍全量检索）
+
+### 直接对标论文/专利
+| 文献 | 内容 | 对本项目的作用 |
+|---|---|---|
+| Anti-Cheating Model Based on TransReID Campus Running（Semantic Scholar） | 校园跑反作弊模型（行人再识别+轨迹校验） | 蓝方防御的最直接学术参照 |
+| CN114818991B（中国专利） | 校园跑反作弊模块：运动监测+打卡信息校验 | 蓝方模块化防御设计参照 |
+| CN107016465A（中国专利） | 服务器端多账号同点同时打卡检测 | 服务端交叉校验的工业实现依据 |
+| Sistem Absensi Geofencing Berlapis GPS-Spoofing（印尼期刊） | 多层地理围栏防 GPS 欺骗 | 校园场景防伪佐证 |
+
+### 直接对标开源项目
+| 项目 | 能力 | 借鉴点 |
+|---|---|---|
+| [MokrRun](https://github.com/QaQ-ciallo/MokrRun) | 画线代跑+轨迹步数模拟+**定位质量伪装+反检测** | 定位质量伪装（精度/卫星数/漂移）——本项目轨迹替换的缺失块 |
+| [dlut-FakeRun](https://github.com/LangQi99/dlut-FakeRun) | 一键虚拟定位刷校园跑 | 与"一键改造"交互对照 |
+| [xbud-campus-run](https://github.com/lc655254/xbud-campus-run) | LSPosed 定位/步频+路线生成自动开跑 | 步频伪造与自动开跑的模块设计 |
+| [fuckschoolrun](https://github.com/Acooldog/fuckschoolrun) | 影梭+模拟NFC | NFC 打卡伪造面 |
+| [FakeGeo](https://github.com/myxuebi/FakeGeo) | 模拟 WIFI/蓝牙/基站定位 | 环境定位伪造深度 |
+| [GlobalTraveling](https://github.com/Qeccentric/GlobalTraveling) | LSPosed 虚拟定位+环境伪装 | 环境伪装层 |
+
+**结论**：有 root 环境的主流路线 = LSPosed 模块（上述全部）；本项目 = 免 root 注入路线的工程补充。MokrRun 的"定位质量伪装"为下一轮迭代的直接输入。

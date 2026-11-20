@@ -25,6 +25,8 @@
 - [三种攻击方式](#三种攻击方式)
 - [防护蓝图](#防护蓝图)
 - [评估工具 · sentinel](#评估工具--sentinel本项目内置-cli)
+- [性能](#性能)
+- [与现有方案对比](#与现有方案对比)
 - [两件交付物](#两件交付物)
 - [快速开始](#快速开始)
 - [评估结论](#评估结论)
@@ -93,6 +95,9 @@ python -m sentinel evidence evidence.json -o evidence-report.md
 
 # 合并总报告
 python -m sentinel bundle --apk app.apk --trace trace.csv --evidence evidence.json -o report.md
+
+# 生成单文件 HTML 报告（内嵌样式，可直接分享/归档）
+python -m sentinel html --apk app.apk --trace trace.csv --evidence evidence.json -o report.html
 ```
 
 | 模块 | 职责 | 关键指标 |
@@ -102,7 +107,33 @@ python -m sentinel bundle --apk app.apk --trace trace.csv --evidence evidence.js
 | `sentinel/evidence.py` | 成绩证据校验 | 里程重算偏差、用时一致性、平均/瞬时速度上限 |
 | `sentinel/report.py` | Markdown 报告 | 三类报告 + 合并报告 |
 
-测试：`python -m unittest discover -s tests -v`（10 个用例，CI 自动执行）。
+测试：`python -m unittest discover -s tests -v`（12 个用例，CI 自动执行）。
+
+## 性能
+
+单线程 CPython，10 万点轨迹实测（`python bench/bench.py 100000` 可复现）：
+
+| 阶段 | 耗时 | 吞吐 |
+|---|---|---|
+| 轨迹分析 `analyze()` | 0.280 s | **356,553 点/s** |
+| 证据校验 `validate()` | 0.164 s | **610,974 点/s** |
+| CSV 解析往返 | 0.262 s | **381,151 点/s** |
+
+算法复杂度 O(n)，单机可处理全天级轨迹量（约 86,400 点/天 ≈ 0.24 s）。
+
+## 与现有方案对比
+
+| 能力维度 | 本项目 | 商业加固（顶象/360 等） | 通用扫描器（nuclei 等） | SRC 人工复核 | 学术轨迹检测 |
+|---|---|---|---|---|---|
+| 包体加固/壳识别 | ✅ 特征库 + 评分 | ❌（被加固对象） | ⚠️ 部分指纹 | ❌ | ❌ |
+| 轨迹可信度分析 | ✅ 可解释六指标 | ❌ | ❌ | ⚠️ 依赖经验 | ✅ 论文方法 |
+| 成绩证据重算 | ✅ 一键校验 | ❌ | ❌ | ⚠️ 部分 | ❌ |
+| 报告输出 | ✅ MD + HTML | 商业报表 | ✅ MD/JSON | 人工报告 | ❌ |
+| 零依赖 / 可审计 | ✅ 纯标准库 MIT | ❌ 黑盒 | ⚠️ 部分 | — | ⚠️ 部分 |
+| 真实披露背书 | ✅ EDUSRC | — | — | — | — |
+
+定位：**不是替代商业加固或扫描器，而是补齐"服务端证据校验"这一环**——
+加固负责抬高攻击成本，本工具负责在数据侧判定真伪。
 
 ## 快速开始
 

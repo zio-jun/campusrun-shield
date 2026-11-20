@@ -19,7 +19,7 @@ import random
 import sys
 from typing import List
 
-from . import apk_guard, evidence, mock_trace, report
+from . import apk_guard, evidence, html_report, mock_trace, report
 from .mock_trace import Point
 
 __version__ = "0.1.0"
@@ -149,6 +149,26 @@ def _cmd_demo(args) -> int:
     return 0
 
 
+def _cmd_html(args) -> int:
+    apk_rep = None
+    trace_rep = None
+    ev_rep = None
+    if args.apk:
+        apk_rep = apk_guard.inspect_apk(args.apk).to_dict()
+    if args.trace:
+        trace_rep = mock_trace.analyze(_load_trace(args.trace)).to_dict()
+    if args.evidence:
+        with open(args.evidence, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        ev_rep = evidence.validate(payload).to_dict()
+    out = html_report.render_html(apk_rep, trace_rep, ev_rep)
+    print("HTML 报告已生成" + (f": {args.out}" if args.out else ""))
+    if args.out:
+        with open(args.out, "w", encoding="utf-8") as f:
+            f.write(out)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="sentinel",
@@ -184,6 +204,13 @@ def build_parser() -> argparse.ArgumentParser:
     dp = sub.add_parser("demo", help="生成样例并跑通全流程")
     dp.add_argument("--dir")
     dp.set_defaults(func=_cmd_demo)
+
+    hp = sub.add_parser("html", help="生成 HTML 报告（单文件，可分享）")
+    hp.add_argument("--apk")
+    hp.add_argument("--trace")
+    hp.add_argument("--evidence")
+    hp.add_argument("-o", "--out")
+    hp.set_defaults(func=_cmd_html)
     return p
 
 

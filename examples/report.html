@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang='zh-CN'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Campus Run Sentinel 评估报告</title><style>
+:root{--bg:#0f172a;--card:#1e293b;--ink:#e2e8f0;--mut:#94a3b8;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--acc:#38bdf8}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;background:var(--bg);color:var(--ink);padding:32px}
+.wrap{max-width:1000px;margin:0 auto}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:19px;margin:34px 0 12px;padding-bottom:8px;border-bottom:1px solid #334155}
+.sub{color:var(--mut);margin-bottom:26px}
+.card{background:var(--card);border:1px solid #334155;border-radius:12px;padding:18px 20px;margin:14px 0}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid #334155;font-size:14px}
+th{color:var(--mut);font-weight:600}
+.ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+.badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:13px;font-weight:600}
+.b-ok{background:rgba(34,197,94,.15);color:var(--ok)}
+.b-warn{background:rgba(245,158,11,.15);color:var(--warn)}
+.b-bad{background:rgba(239,68,68,.15);color:var(--bad)}
+code{background:#0b1220;padding:1px 6px;border-radius:6px;font-size:13px}
+.mut{color:var(--mut)}
+.score{font-size:34px;font-weight:700;color:var(--acc)}
+ul{margin:8px 0 8px 20px}
+footer{margin-top:36px;color:var(--mut);font-size:13px}
+</style></head><body><div class='wrap'><h1>Campus Run Sentinel · 安全评估报告</h1><p class='sub'>生成时间：2026-11-20 15:21:10　工具版本：v0.3.1　项目：zio-jun/campusrun-shield</p><h2>一、APK 加固评估</h2>
+<div class="card">
+  <p>文件：<code>examples\sample-hardened.apk</code>　大小：0.00 MB　DEX：1　
+     ABI：armeabi-v7a</p>
+  <p>加固等级：<span class="badge b-bad">medium</span>　评分 6</p>
+  <table><tr><th>厂商</th><th>证据特征</th></tr><tr><td>顶象 DxShield</td><td><code>libapk0000.so, libstub000.so</code></td></tr></table>
+  <p>可疑资产：</p><ul><li><code>assets/csn8783f650.data</code></li></ul>
+</div><h2>二、轨迹可信度</h2>
+<div class="card">
+  <div class="score">65 <span class="mut" style="font-size:15px">/ 100</span></div>
+  <p class="mut">点数 180　时长 179.0 s　里程 572.1 m　
+     平均速度 3.196 m/s　CV 0.015　熵 0.82</p>
+  <ul><li>速度过于恒定：CV=0.015（真人配速波动通常 &gt; 5%）</li><li>速度钳制特征：74% 的点速度贴近同一值（匀速回放特征）</li><li>时间间隔高度等间隔：100%（机器生成特征）</li><li>速度分布熵偏低：0.82（分布过于集中）</li></ul>
+</div><h2>三、成绩证据校验</h2>
+<div class="card">
+  <p>结论：<span class="badge b-warn">warn</span>
+     通过 4 项 / 失败 2 项</p>
+  <table><tr><th>编号</th><th>结果</th><th>说明</th></tr><tr><td>E001</td><td><span class="ok">✅</span></td><td>轨迹点数：60</td></tr><tr><td>E002</td><td><span class="bad">❌</span></td><td>里程一致性：上报 3000.0 m / 重算 188.6 m / 偏差 93.71%</td></tr><tr><td>E003</td><td><span class="ok">✅</span></td><td>时间戳单调性：通过；时间跨度 59 s</td></tr><tr><td>E004</td><td><span class="bad">❌</span></td><td>用时一致性：上报 1200 s / 轨迹跨度 59 s / 差 1141 s</td></tr><tr><td>E005</td><td><span class="ok">✅</span></td><td>平均速度：3.20 m/s（合理区间 1~10）</td></tr><tr><td>E006</td><td><span class="ok">✅</span></td><td>瞬时最大速度：3.22 m/s（上限 10）</td></tr></table>
+</div><footer>本报告由 Campus Run Sentinel 自动生成；评估仅基于静态特征与数据校验，不对目标系统做任何侵入性操作。</footer></div></body></html>

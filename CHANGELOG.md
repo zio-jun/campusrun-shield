@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.3.2 — 2026-11-20
+
+### 报告与性能
+
+- 新增 `sentinel/html_report.py` 与 `sentinel html` 子命令：单文件 HTML 报告（内嵌样式）
+- 新增 `bench/bench.py`：10 万点轨迹基准（分析 0.28s / 校验 0.16s / CSV 0.26s）
+- README 新增「性能」「与现有方案对比」两节
+- 新增 `examples/report.html` 示例
+- 测试增至 12 个（覆盖 HTML 渲染）
+
 ## v0.3.1 — 2026-11-20
 
 ### 工程化完善

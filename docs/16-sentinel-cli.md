@@ -107,7 +107,18 @@ python -m sentinel bundle --apk examples/sample-hardened.apk \
 三类结果合并为一份 Markdown（见 `examples/bundle-report.md`），可直接作为
 安全评估报告附件。
 
-## 五、demo —— 样例全流程
+## 五、html —— 单文件 HTML 报告
+
+```bash
+python -m sentinel html --apk examples/sample-hardened.apk \
+  --trace examples/trace_fake.csv --evidence examples/evidence.json \
+  -o examples/report.html
+```
+
+生成内嵌样式的单文件 HTML（深色主题、评分徽章、表格化证据），
+可直接浏览器打开或作为评估报告附件分发。样例：`examples/report.html`。
+
+## 六、demo —— 样例全流程
 
 ```bash
 python -m sentinel demo --dir examples

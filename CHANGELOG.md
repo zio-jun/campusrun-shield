@@ -2,6 +2,16 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.2.1 — 2026-11-20
+
+### 安全通告
+
+- 新增 [SECURITY.md](SECURITY.md)：披露政策与时间线承诺
+- 新增 [docs/advisories/](docs/advisories/)：通告索引与首条通告
+  [CRSH-ADV-2026-001](docs/advisories/2026-11-20-campus-run-score-integrity.md)
+  （校园跑成绩提交接口数据完整性校验缺失，中危，已通过 EDUSRC 报送）
+- README 新增「安全通告」入口
+
 ## v0.2.0 — 2026-11-20
 
 ### 文档

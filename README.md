@@ -122,6 +122,13 @@ campusrun-shield/
 └── README.md
 ```
 
+## 安全通告
+
+本项目的相关披露记录见 [docs/advisories/](docs/advisories/)：
+
+- [CRSH-ADV-2026-001](docs/advisories/2026-11-20-campus-run-score-integrity.md) —— 校园跑成绩提交接口数据完整性校验缺失（中危，已通过 EDUSRC 报送，待修复）
+- 披露政策：[SECURITY.md](SECURITY.md)
+
 ## 文档索引
 
 | 文档 | 内容 |
